@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: diligent-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run seed
+    startCommand: npm run start
+    rootDir: backend
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: PORT
+        value: 5000
+      - key: CLIENT_ORIGIN
+        value: https://diligent-frontend.onrender.com
+      # Set MONGODB_URI in the Render dashboard or replace the next line with a value
+      - key: MONGODB_URI
+        sync: false
+
+  - type: static
+    name: diligent-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        # Replace with the actual backend URL after the backend is deployed
+        value: https://diligent-backend.onrender.com/api
+
